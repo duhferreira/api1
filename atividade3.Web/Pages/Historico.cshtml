@@ -1,0 +1,65 @@
+﻿@page "{id:int?}"
+@model atividade3.Web.Pages.HistoricoModel
+@{
+    ViewData["Title"] = "Histórico de Coletas";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 mb-4 bg-white p-4">
+        <div class="d-flex align-items-center mb-3">
+            <span class="fs-1 me-3">📈</span>
+            <div>
+                <h3 class="fw-bold mb1-0">Variação de Preços ao Longo do Tempo</h3>
+                <p class="text-muted mb-0">Análise histórica das coletas para o Combustível ID: <strong>@Model.CombustivelId</strong></p>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Lista dinâmica em HTML Puro: nunca corta e funciona em qualquer tela -->
+        <div id="listaHistorico" class="row g-3 my-2">
+            <!-- Os dados do MySQL serão injetados aqui em formato de cards limpos -->
+        </div>
+    </div>
+    
+    <a asp-page="/Index" class="btn btn-secondary fw-semibold">⬅️ Voltar para a Lista</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Captura o JSON enviado pela API1 através do C#
+        const dadosBrutos = @Html.Raw(Model.JsonDados);
+        const container = document.getElementById('listaHistorico');
+        
+        if (!dadosBrutos || dadosBrutos.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-4">
+                    <p class="text-warning fw-bold fs-5">⚠️ Nenhuma coleta de preços registrada para este combustível.</p>
+                </div>`;
+            return;
+        }
+
+        // Ordena as coletas pelas datas mais recentes
+        dadosBrutos.sort((a, b) => new Date(b.Data || b.data) - new Date(a.Data || a.data));
+
+        // Monta o visual em HTML dinamicamente com espaçamento perfeito
+        let htmlConteudo = '';
+        dadosBrutos.forEach(d => {
+            const dataString = d.Data || d.data || d.Datas || d.datas;
+            const dataFormatada = new Date(dataString).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+            
+            const valorBruto = d.Preco ?? d.preco ?? d.Precos ?? d.precos;
+            const precoFormatado = parseFloat(valorBruto).toFixed(2).replace('.', ',');
+
+            htmlConteudo += `
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-3 border rounded bg-light shadow-inner d-flex justify-content-between align-items-center">
+                        <span class="text-secondary fw-medium">🗓️ ${dataFormatada}</span>
+                        <span class="fs-5 fw-bold text-success">R$ ${precoFormatado}</span>
+                    </div>
+                </div>`;
+        });
+
+        container.innerHTML = htmlConteudo;
+    });
+</script>

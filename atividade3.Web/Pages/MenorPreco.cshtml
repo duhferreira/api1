@@ -1,0 +1,61 @@
+﻿@page
+@model atividade3.Web.Pages.MenorPrecoModel
+@{
+    ViewData["Title"] = "Menores Preços";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>📉 Menor Preço Registrado</h3>
+        <button id="btnCompartilhar" class="btn btn-outline-primary fw-bold">
+            📲 Compartilhar Preços
+        </button>
+    </div>
+
+    <table class="table table-hover table-bordered shadow-sm bg-white">
+        <thead class="table-success">
+            <tr>
+                <th>Combustível</th>
+                <th>Categoria</th>
+                <th>Menor Valor Cadastrado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MenoresPrecos)
+            {
+                <tr>
+                    <td class="fw-bold">@item.Nome</td>
+                    <td><span class="badge bg-secondary">@item.Categoria</span></td>
+                    <td class="fw-bold text-success fs-5">R$ @item.MenorPreco.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-page="/Index" class="btn btn-secondary mt-2">Voltar</a>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('btnCompartilhar').addEventListener('click', async () => {
+            const textoCodificado = "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Model.TextoResumo)";
+
+            // Cria um elemento temporário para decodificar o HTML puro e limpar barras extras do C#
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(`<!doctype html><body>${textoCodificado}`, 'text/html');
+            const textoFinal = doc.body.textContent;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'Menores Preços ES', text: textoFinal });
+                } catch (err) {
+                    console.log('Compartilhamento cancelado');
+                }
+            } else {
+                await navigator.clipboard.writeText(textoFinal);
+                alert('Resumo de preços copiado com sucesso! Você já pode colar no WhatsApp.');
+            }
+        });
+    </script>
+}
+
