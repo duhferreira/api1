@@ -11,7 +11,6 @@ public class Produto
     [Column("tipos")]
     public string Nome { get; set; } = string.Empty;
 
-    // Avisa a API para ignorar esta linha ao consultar o MySQL
     [NotMapped]
     public string Categoria { get; set; } = "Combustível";
 }

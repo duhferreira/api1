@@ -5,7 +5,7 @@ namespace api1.Models;
 [Table("coletas")]
 public class PrecoHistorico
 {
-    [Column("id")] // No seu SQL da AOP2 você definiu apenas como "id"
+    [Column("id")] 
     public int Id { get; set; }
 
     [Column("id_combustiveis")]
@@ -14,6 +14,6 @@ public class PrecoHistorico
     [Column("datas")]
     public DateTime Data { get; set; }
 
-    [Column("precos")] // No seu SQL está "precos" no plural
+    [Column("precos")] 
     public decimal Preco { get; set; }
 }

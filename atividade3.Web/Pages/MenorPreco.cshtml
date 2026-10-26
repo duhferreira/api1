@@ -40,7 +40,6 @@
         document.getElementById('btnCompartilhar').addEventListener('click', async () => {
             const textoCodificado = "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Model.TextoResumo)";
 
-            // Cria um elemento temporário para decodificar o HTML puro e limpar barras extras do C#
             const parser = new DOMParser();
             const doc = parser.parseFromString(`<!doctype html><body>${textoCodificado}`, 'text/html');
             const textoFinal = doc.body.textContent;

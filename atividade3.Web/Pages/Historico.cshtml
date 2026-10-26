@@ -16,9 +16,8 @@
 
         <hr />
 
-        <!-- Lista dinâmica em HTML Puro: nunca corta e funciona em qualquer tela -->
         <div id="listaHistorico" class="row g-3 my-2">
-            <!-- Os dados do MySQL serão injetados aqui em formato de cards limpos -->
+          
         </div>
     </div>
     
@@ -39,10 +38,9 @@
             return;
         }
 
-        // Ordena as coletas pelas datas mais recentes
         dadosBrutos.sort((a, b) => new Date(b.Data || b.data) - new Date(a.Data || a.data));
 
-        // Monta o visual em HTML dinamicamente com espaçamento perfeito
+        
         let htmlConteudo = '';
         dadosBrutos.forEach(d => {
             const dataString = d.Data || d.data || d.Datas || d.datas;

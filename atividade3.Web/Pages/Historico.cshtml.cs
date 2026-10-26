@@ -18,7 +18,6 @@ public class HistoricoModel : PageModel
         if (id <= 0) return RedirectToPage("/Index");
         CombustivelId = id;
 
-        // Consome o endpoint histórico que você configurou ontem na API
         var dados = await _apiService.Historico(id);
         JsonDados = JsonSerializer.Serialize(dados);
         return Page();

@@ -13,12 +13,11 @@ public class ProdutosController : ControllerBase
 
     public ProdutosController(AppDbContext db) => _db = db;
 
-    // 1. Listar todos os tipos de combustíveis da AOP2
     [HttpGet]
     public async Task<IActionResult> Listar()
         => Ok(await _db.Produtos.ToListAsync());
 
-    // 2. Buscar o Menor Preço de cada combustível (Igual à sua query SQL!)
+   
     [HttpGet("menor-preco")]
     public async Task<IActionResult> MenorPreco()
     {
@@ -43,7 +42,7 @@ public class ProdutosController : ControllerBase
         return Ok(resultado);
     }
 
-    // 3. Buscar o Histórico de Coletas de um combustível específico (Para alimentar o gráfico)
+   
     [HttpGet("historico/{produtoId:int}")]
     public async Task<IActionResult> Historico(int produtoId)
     {
